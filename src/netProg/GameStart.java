@@ -36,7 +36,8 @@ public class GameStart extends JFrame implements KeyListener,MouseListener,Runna
 	   boolean die = false;
 	   int bombAvailable =3;		//초기 최대 물풍선 개수는 1
 	 //  boolean isBombExplode = false;
-	   private int speed = 40;  //80이 기본, 40이면 빠름
+	   private int speed = 40;  //80이 기본, 40이면 빠름, 테스트용이라 30고정
+	   private int MaxSpeed = 30;
 	
 	//myMove, yourMove에 쓸 StringData
 	   final String UP = "up";
@@ -57,7 +58,7 @@ public class GameStart extends JFrame implements KeyListener,MouseListener,Runna
 	  //map state
 	   final String BROWNBLOCK = "BROWNBLOCK";
 	   final String PINKBLOCK = "PINKBLOCK";
-	   final String ITEM = "ITEM";
+	  // final String ITEM = "ITEM";
 	   final String FREE = "FREE";
 	   final String BOMB = "BOMB";
 	   final String BUP = "BUP";
@@ -70,7 +71,7 @@ public class GameStart extends JFrame implements KeyListener,MouseListener,Runna
 	   final String ITEMPLUSBOMB = "ITEMPLUSBOMB";			//물풍선 개수 증가
 	   
 	   //8개중 3개만아이템 (나올확률 1/8)
-	   private String[] itemArray = {ITEMSPEED, ITEMSPEED, ITEMSPEED, ITEMSPEED, ITEMSPEED, ITEMSPEED, FREE,FREE};
+	   private String[] itemArray = {ITEMSPEED, ITEMSPEED, ITEMSPEED, ITEMSPEED, FREE, FREE, FREE,FREE};
 	
 	// 아이템 변수
 	   private Vector<JLabel> item = new Vector<JLabel>();
@@ -228,7 +229,28 @@ public class GameStart extends JFrame implements KeyListener,MouseListener,Runna
 						   		continue;
 						   }
 					   		break;
-					   	case ITEM:
+					   		
+					   		
+					   	case ITEMSPEED:
+					   		if (((myX >= mapInfo.map[i][j].x-40) && (myX<= mapInfo.map[i][j].x)) && ((myY < mapInfo.map[i][j].y+5) && (myY> mapInfo.map[i][j].y-35))) {
+								   mapInfo.map[i][j].state =FREE;
+								   itemSpeedUp();
+							   		continue;
+							   }else if (((myX >= mapInfo.map[i][j].x) && (myX<= mapInfo.map[i][j].x+40)) && ((myY < mapInfo.map[i][j].y+5) && (myY> mapInfo.map[i][j].y-35))) {
+								   mapInfo.map[i][j].state =FREE;
+								   itemSpeedUp();
+							   		continue;
+							   }else if (((myX > mapInfo.map[i][j].x-10) && (myX< mapInfo.map[i][j].x+30)) && ((myY > mapInfo.map[i][j].y) && (myY< mapInfo.map[i][j].y+40))) {
+								   mapInfo.map[i][j].state =FREE;
+								   itemSpeedUp();
+							   		continue;
+							   }else if (((myX >= mapInfo.map[i][j].x-10) && (myX<= mapInfo.map[i][j].x+30)) && ((myY+46 >= mapInfo.map[i][j].y-10) && (myY+46< mapInfo.map[i][j].y+40))) {
+								   mapInfo.map[i][j].state =FREE;
+								   itemSpeedUp();
+							   		continue;
+							   }
+					   		
+					   		
 					   		break;
 					   	case BOMB:   
 						   if (((myX >= mapInfo.map[i][j].x-40) && (myX<= mapInfo.map[i][j].x)) && ((myY < mapInfo.map[i][j].y+5) && (myY> mapInfo.map[i][j].y-35))) {
@@ -252,20 +274,23 @@ public class GameStart extends JFrame implements KeyListener,MouseListener,Runna
 	   
 	   
 	   
+	   public void itemSpeedUp() {
+		   this.speed-=20;
+		   if(speed<MaxSpeed)
+		   speed = MaxSpeed;
+	   }
 	   
 	   public class BombThread implements Runnable {
 		   int bombX, bombY;
 		   public BombThread(int myX, int myY) {
-			   this.bombX = myX;
-			   this.bombY = myY;
-			   
-
-		    	  System.out.println("1 >>>"+bombX+bombY);
-		    	  bombX/=40;
-		    	  bombY/=40;
-		    	  if (myY !=0) bombY+=1;
-		    	  
-		    	  System.out.println("배열좌표>>>"+bombX+","+bombY);
+			  this.bombX = myX;
+			  this.bombY = myY;
+	    	  System.out.println("1 >>>"+bombX+bombY);
+	    	  bombX/=40;
+	    	  bombY/=40;
+	    	  if (myY !=0) bombY+=1;
+	    	  
+	    	  System.out.println("배열좌표>>>"+bombX+","+bombY);
 		       // store parameter for later user
 		   }//End of 생성자
 
@@ -276,7 +301,7 @@ public class GameStart extends JFrame implements KeyListener,MouseListener,Runna
 	                 try {
 	                	 Thread.sleep(3000);
 	                	 explodeBomb(bombX,bombY);
-	                	 Thread.sleep(500);
+	                	 Thread.sleep(400);
 	                	 freeBomb(bombX,bombY);
 	                 } catch (InterruptedException e) {
 	                  // TODO Auto-generated catch block
@@ -286,62 +311,55 @@ public class GameStart extends JFrame implements KeyListener,MouseListener,Runna
 	         }//End of run()
 		}//End of BombThread
 	   
-	   public void randomState(MapInfo mapinfo) {
-		   
-	   }
+		
 	   
 	   
 	   
 	   
 	      public void freeBomb(int bombX, int bombY) {
-	    	  //이렇게하면 아이템 줄 수 없음 왜냐면 이전상태가 모두 bomb에 관한 상태로 바뀌기 때문에 벽이었는지 확인 불가함
-	    	  //클래스에 이전상태를 저장하는 배열을 만들어 관리하던가 해야함
+	    	  int randomNum;
 	    	  System.out.println("FreeBomb");
-	    	  printMap(); 
 	    	  mapInfo.map[bombY][bombX].state = FREE;
 	    	  if (bombY-1 >=0) {
 	    		  if (mapInfo.map[bombY-1][bombX].wasWall==true) {	  //이전 상태가 벽 상태였으면,  		  
-	    		 // if (mapInfo.map[bombY-1][bombX].state != FREE) {	    		  
 	    			  //여기다 랜덤으로 state를 FREE 또는 아이템 1,2로 설정하는 함수 
+	    			  randomNum = random.nextInt(8);
 	    			  mapInfo.map[bombY-1][bombX].wasWall=false; //벽 취소
-	    			  mapInfo.map[bombY-1][bombX].state =itemArray[random.nextInt(8)];	    			  
+	    			  mapInfo.map[bombY-1][bombX].state =itemArray[randomNum];	    			  
 	    	  		}	else {
-	    		  mapInfo.map[bombY-1][bombX].state = FREE;
-	    	  		}
+	    	  				mapInfo.map[bombY-1][bombX].state = FREE;
+	    	  				}
 	    	  }
 	    	  if(bombY+1<15) {
 	    		  if (mapInfo.map[bombY+1][bombX].wasWall==true) {	  //이전 상태가 벽 상태였으면,  
-	    			  // if (mapInfo.map[bombY-1][bombX].state != FREE) {	    		  
-	 	    			  //여기다 랜덤으로 state를 FREE 또는 아이템 1,2로 설정하는 함수 
+	    			  randomNum = random.nextInt(8);
 	    			  mapInfo.map[bombY+1][bombX].wasWall=false; //벽 취소
-	 	    			  mapInfo.map[bombY+1][bombX].state =itemArray[random.nextInt(8)];	    			  
+	    			  mapInfo.map[bombY+1][bombX].state =itemArray[randomNum];	    			  
 	 	    	  		}	else {
-	 	    		  mapInfo.map[bombY+1][bombX].state = FREE;
-	 	    	  		}
+	 	    	  				mapInfo.map[bombY+1][bombX].state = FREE;
+	 	    	  				}
 	    	  }
 	    		
 	    	  if(bombX+1 <15) {
 	    		  if (mapInfo.map[bombY][bombX+1].wasWall==true) {	  //이전 상태가 벽 상태였으면,  
-	    			  // if (mapInfo.map[bombY-1][bombX].state != FREE) {	    		  
-	 	    			  //여기다 랜덤으로 state를 FREE 또는 아이템 1,2로 설정하는 함수 
+	    			  randomNum = random.nextInt(8);
 	    			  mapInfo.map[bombY][bombX+1].wasWall=false; //벽 취소
-	 	    			  mapInfo.map[bombY][bombX+1].state =itemArray[random.nextInt(8)];	    			  
+	    			  mapInfo.map[bombY][bombX+1].state =itemArray[randomNum];	    			  
 	 	    	  		}	else {
-	 	    		  mapInfo.map[bombY][bombX+1].state = FREE;
-	 	    	  		}
+				 	    		  mapInfo.map[bombY][bombX+1].state = FREE;
+				 	    	  	}
 	    	  }
 	    		 
 	    	  if(bombX-1 >=0) {
 	    		  if (mapInfo.map[bombY][bombX-1].wasWall==true) {	  //이전 상태가 벽 상태였으면,  
 	    			  // if (mapInfo.map[bombY-1][bombX].state != FREE) {	    		  
-	 	    			  //여기다 랜덤으로 state를 FREE 또는 아이템 1,2로 설정하는 함수 
-	    			  	mapInfo.map[bombY][bombX-1].wasWall=false; //벽 취소
-	 	    			  mapInfo.map[bombY][bombX-1].state =itemArray[random.nextInt(8)];	    			  
+	    			  randomNum = random.nextInt(8);	
+	    			  mapInfo.map[bombY][bombX-1].wasWall=false; //벽 취소
+	    			  mapInfo.map[bombY][bombX-1].state =itemArray[randomNum];	    			  
 	 	    	  		}	else {
-	 	    		  mapInfo.map[bombY][bombX-1].state = FREE;
-	 	    	  		}    
-	    	  }
-	    		  
+	 	    	  				mapInfo.map[bombY][bombX-1].state = FREE;
+	 	    	  				}    
+	    	  }	    		  
 	    	  bombAvailable+=1;  
 	    	  printMap();
 	      }
@@ -603,15 +621,16 @@ public class GameStart extends JFrame implements KeyListener,MouseListener,Runna
 			   for (int i = 0; i<15; i++) {
 				   for (int j =0; j<15; j++) {
 					   switch(mapInfo.map[i][j].state) {
+					   
+					   //WALL
 						   case BROWNBLOCK :
 							   gc.drawImage(iconBoxBrown,mapInfo.map[i][j].x,mapInfo.map[i][j].y,this);
 							   break;
 						   case PINKBLOCK :
 							   gc.drawImage(iconBoxPink,mapInfo.map[i][j].x,mapInfo.map[i][j].y,this);
 							   break;
-						   case ITEM :
-							   gc.drawImage(iconItemSpeed,mapInfo.map[i][j].x,mapInfo.map[i][j].y,this);
-							   break;
+							   
+						//BOMB	   
 						   case BOMB :
 							   gc.drawImage(iconBomb,mapInfo.map[i][j].x,mapInfo.map[i][j].y,this);
 							   break;
@@ -629,7 +648,9 @@ public class GameStart extends JFrame implements KeyListener,MouseListener,Runna
 							   break;  
 						   case BCENTER :
 							   gc.drawImage(iconBcenter,mapInfo.map[i][j].x,mapInfo.map[i][j].y,this);
-							   break;  
+							   break; 
+							   
+						//ITEM
 						   case ITEMSPEED:
 							   gc.drawImage( new ImageIcon("images/speed.png").getImage(),mapInfo.map[i][j].x,mapInfo.map[i][j].y,this);
 							   break;
@@ -639,6 +660,8 @@ public class GameStart extends JFrame implements KeyListener,MouseListener,Runna
 						   case ITEMPLUSBOMB:
 							   gc.drawImage( new ImageIcon("images/speed.png").getImage(),mapInfo.map[i][j].x,mapInfo.map[i][j].y,this);
 							   break;
+							   
+							   
 						   case FREE :
 							   gc.drawImage(null,mapInfo.map[i][j].x,mapInfo.map[i][j].y,this);
 							   break;
