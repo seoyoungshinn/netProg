@@ -35,6 +35,7 @@ public class GameStart extends JFrame implements KeyListener,MouseListener,Runna
 	// 상태변수
 	   boolean die = false;
 	   int bombAvailable =3;		//초기 최대 물풍선 개수는 1
+	   int maxBomb = 10;
 	 //  boolean isBombExplode = false;
 	   private int speed = 40;  //80이 기본, 40이면 빠름, 테스트용이라 30고정
 	   private int MaxSpeed = 30;
@@ -71,7 +72,7 @@ public class GameStart extends JFrame implements KeyListener,MouseListener,Runna
 	   final String ITEMPLUSBOMB = "ITEMPLUSBOMB";			//물풍선 개수 증가
 	   
 	   //8개중 3개만아이템 (나올확률 1/8)
-	   private String[] itemArray = {ITEMSPEED, ITEMSPEED, ITEMSPEED, ITEMSPEED, FREE, FREE, FREE,FREE};
+	   private String[] itemArray = {ITEMSPEED, ITEMPLUSBOMB, ITEMPLUSBOMB, ITEMSPEED, FREE, FREE, FREE,FREE};
 	
 	// 아이템 변수
 	   private Vector<JLabel> item = new Vector<JLabel>();
@@ -249,9 +250,28 @@ public class GameStart extends JFrame implements KeyListener,MouseListener,Runna
 								   itemSpeedUp();
 							   		continue;
 							   }
-					   		
-					   		
 					   		break;
+					   	
+					   	case ITEMPLUSBOMB:
+					   		if (((myX >= mapInfo.map[i][j].x-40) && (myX<= mapInfo.map[i][j].x)) && ((myY < mapInfo.map[i][j].y+5) && (myY> mapInfo.map[i][j].y-35))) {
+								   mapInfo.map[i][j].state =FREE;
+								   itemPlusBomb();
+							   		continue;
+							   }else if (((myX >= mapInfo.map[i][j].x) && (myX<= mapInfo.map[i][j].x+40)) && ((myY < mapInfo.map[i][j].y+5) && (myY> mapInfo.map[i][j].y-35))) {
+								   mapInfo.map[i][j].state =FREE;
+								   itemPlusBomb();
+							   		continue;
+							   }else if (((myX > mapInfo.map[i][j].x-10) && (myX< mapInfo.map[i][j].x+30)) && ((myY > mapInfo.map[i][j].y) && (myY< mapInfo.map[i][j].y+40))) {
+								   mapInfo.map[i][j].state =FREE;
+								   itemPlusBomb();
+							   		continue;
+							   }else if (((myX >= mapInfo.map[i][j].x-10) && (myX<= mapInfo.map[i][j].x+30)) && ((myY+46 >= mapInfo.map[i][j].y-10) && (myY+46< mapInfo.map[i][j].y+40))) {
+								   mapInfo.map[i][j].state =FREE;
+								   itemPlusBomb();
+							   		continue;
+							   }
+					   		break;
+					   		
 					   	case BOMB:   
 						   if (((myX >= mapInfo.map[i][j].x-40) && (myX<= mapInfo.map[i][j].x)) && ((myY < mapInfo.map[i][j].y+5) && (myY> mapInfo.map[i][j].y-35))) {
 							   keyR = false;
@@ -274,11 +294,22 @@ public class GameStart extends JFrame implements KeyListener,MouseListener,Runna
 	   
 	   
 	   
-	   public void itemSpeedUp() {
+	   public void itemSpeedUp() { //캐릭터 움직임 속도 증가
+		   //근데 이거 다시짜야할 수 도 있음 왜냐면 스레드 마다여서 내가 아이템 먹으면 상대도 증가할수도있어서
+		   //지금은 단위가 repaint 업데이트 단위(아마)인데 테스트 해보고 안돼면 키프로세스에 증가단위를 바꿔야함
+		   //일단 1인용일때는 되긴 함
 		   this.speed-=20;
 		   if(speed<MaxSpeed)
 		   speed = MaxSpeed;
 	   }
+	   
+	   
+	   public void itemPlusBomb() {	//한 번에 가능한 물풍선 개수 증가 (최대 10)
+		   this.bombAvailable+=1;
+		   if(bombAvailable>maxBomb)
+			   bombAvailable = maxBomb;
+	   }
+	   
 	   
 	   public class BombThread implements Runnable {
 		   int bombX, bombY;
