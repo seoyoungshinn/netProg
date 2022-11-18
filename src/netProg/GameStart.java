@@ -109,7 +109,7 @@ public class GameStart extends JFrame implements KeyListener,MouseListener,Runna
 		     contentPane.setLayout(null);
 
 		     setContentPane(contentPane);
-		     setResizable(true); //윈도우 크기 변경 불가
+		     setResizable(true); //윈도우 크기 변경 
 		     setVisible(true);		     
 		     addKeyListener(this);//키 입력 이벤트 리스너 활성화
 		     
@@ -137,7 +137,10 @@ public class GameStart extends JFrame implements KeyListener,MouseListener,Runna
 				 //  System.out.printf("(%3d,%3d) %10s\t", mapInfo.map[i][j].x,mapInfo.map[i][j].y,mapInfo.map[i][j].state);
 			   
 				 //상태만출력  
-				   System.out.printf("%10s\t", mapInfo.map[i][j].state); 	
+				   //System.out.printf("%10s\t", mapInfo.map[i][j].state); 
+				   
+				 //벽여부만 출력
+				   System.out.printf("%3s\t", mapInfo.map[i][j].wasWall); 
 			   }
 			   System.out.println();
 		   } 
@@ -154,8 +157,10 @@ public class GameStart extends JFrame implements KeyListener,MouseListener,Runna
 		   //가생이 갈색 블록 추가
 		   for (int j = 0; j<15; j++) {
 			   for (int i =0; i<15; i++) {
-				   if (i == 0 || i == 14 || j ==0 || j ==14)
+				   if (i == 0 || i == 14 || j ==0 || j ==14) {
 					   mapInfo.map[i][j].state = BROWNBLOCK;
+				   	   mapInfo.map[i][j].wasWall = true;
+				   }//End of if
 			   }//End of inner for
 		   }//End of outer for
 		   
@@ -173,7 +178,20 @@ public class GameStart extends JFrame implements KeyListener,MouseListener,Runna
 		   mapInfo.map[11][5].state = PINKBLOCK;		   mapInfo.map[11][9].state = PINKBLOCK;
 		   mapInfo.map[12][6].state = PINKBLOCK;		   mapInfo.map[12][8].state = PINKBLOCK;
 		   mapInfo.map[13][7].state = PINKBLOCK;
-		   //핑크하트 끝..	   
+		   //핑크하트도 모두 벽처리 		   
+		   mapInfo.map[1][3].wasWall = true;		   mapInfo.map[1][4].wasWall = true;		   mapInfo.map[1][5].wasWall = true;		   mapInfo.map[1][9].wasWall = true;		   mapInfo.map[1][10].wasWall = true;		   mapInfo.map[1][11].wasWall = true;
+		   mapInfo.map[2][2].wasWall = true;		   mapInfo.map[2][6].wasWall = true;		   mapInfo.map[2][8].wasWall = true;		   mapInfo.map[2][12].wasWall = true;
+		   mapInfo.map[3][1].wasWall = true;		   mapInfo.map[3][7].wasWall = true;		   mapInfo.map[3][13].wasWall = true;
+		   mapInfo.map[4][1].wasWall = true;		   mapInfo.map[4][7].wasWall = true;		   mapInfo.map[4][13].wasWall = true;
+		   mapInfo.map[5][1].wasWall = true;		   mapInfo.map[5][13].wasWall = true;
+		   mapInfo.map[6][1].wasWall = true;		   mapInfo.map[6][13].wasWall = true;
+		   mapInfo.map[7][1].wasWall = true;		   mapInfo.map[7][13].wasWall = true;
+		   mapInfo.map[8][2].wasWall = true;		   mapInfo.map[8][12].wasWall = true;
+		   mapInfo.map[9][3].wasWall = true;		   mapInfo.map[9][11].wasWall = true;
+		   mapInfo.map[10][4].wasWall = true;		   mapInfo.map[10][10].wasWall = true;
+		   mapInfo.map[11][5].wasWall = true;		   mapInfo.map[11][9].wasWall = true;
+		   mapInfo.map[12][6].wasWall = true;		   mapInfo.map[12][8].wasWall = true;
+		   mapInfo.map[13][7].wasWall = true;
 	   }//End of mapSetting(MapInfo mapInfo)
 	   
 	   
@@ -282,18 +300,20 @@ public class GameStart extends JFrame implements KeyListener,MouseListener,Runna
 	    	  printMap(); 
 	    	  mapInfo.map[bombY][bombX].state = FREE;
 	    	  if (bombY-1 >=0) {
-	    		  if ((mapInfo.map[bombY-1][bombX].state == BROWNBLOCK)||(mapInfo.map[bombY-1][bombX].state == PINKBLOCK)) {	    		  
+	    		  if (mapInfo.map[bombY-1][bombX].wasWall==true) {	  //이전 상태가 벽 상태였으면,  		  
 	    		 // if (mapInfo.map[bombY-1][bombX].state != FREE) {	    		  
 	    			  //여기다 랜덤으로 state를 FREE 또는 아이템 1,2로 설정하는 함수 
+	    			  mapInfo.map[bombY-1][bombX].wasWall=false; //벽 취소
 	    			  mapInfo.map[bombY-1][bombX].state =itemArray[random.nextInt(8)];	    			  
 	    	  		}	else {
 	    		  mapInfo.map[bombY-1][bombX].state = FREE;
 	    	  		}
 	    	  }
 	    	  if(bombY+1<15) {
-	    		  if ((mapInfo.map[bombY+1][bombX].state == BROWNBLOCK)||(mapInfo.map[bombY+1][bombX].state == PINKBLOCK)) {	    		  
-	 	    		 // if (mapInfo.map[bombY-1][bombX].state != FREE) {	    		  
+	    		  if (mapInfo.map[bombY+1][bombX].wasWall==true) {	  //이전 상태가 벽 상태였으면,  
+	    			  // if (mapInfo.map[bombY-1][bombX].state != FREE) {	    		  
 	 	    			  //여기다 랜덤으로 state를 FREE 또는 아이템 1,2로 설정하는 함수 
+	    			  mapInfo.map[bombY+1][bombX].wasWall=false; //벽 취소
 	 	    			  mapInfo.map[bombY+1][bombX].state =itemArray[random.nextInt(8)];	    			  
 	 	    	  		}	else {
 	 	    		  mapInfo.map[bombY+1][bombX].state = FREE;
@@ -301,9 +321,10 @@ public class GameStart extends JFrame implements KeyListener,MouseListener,Runna
 	    	  }
 	    		
 	    	  if(bombX+1 <15) {
-	    		  if ((mapInfo.map[bombY][bombX+1].state == BROWNBLOCK)||(mapInfo.map[bombY][bombX+1].state == PINKBLOCK)) {	    		  
-	 	    		 // if (mapInfo.map[bombY-1][bombX].state != FREE) {	    		  
+	    		  if (mapInfo.map[bombY][bombX+1].wasWall==true) {	  //이전 상태가 벽 상태였으면,  
+	    			  // if (mapInfo.map[bombY-1][bombX].state != FREE) {	    		  
 	 	    			  //여기다 랜덤으로 state를 FREE 또는 아이템 1,2로 설정하는 함수 
+	    			  mapInfo.map[bombY][bombX+1].wasWall=false; //벽 취소
 	 	    			  mapInfo.map[bombY][bombX+1].state =itemArray[random.nextInt(8)];	    			  
 	 	    	  		}	else {
 	 	    		  mapInfo.map[bombY][bombX+1].state = FREE;
@@ -311,9 +332,10 @@ public class GameStart extends JFrame implements KeyListener,MouseListener,Runna
 	    	  }
 	    		 
 	    	  if(bombX-1 >=0) {
-	    		  if ((mapInfo.map[bombY][bombX-1].state == BROWNBLOCK)||(mapInfo.map[bombY][bombX-1].state == PINKBLOCK)) {	    		  
-	 	    		 // if (mapInfo.map[bombY-1][bombX].state != FREE) {	    		  
+	    		  if (mapInfo.map[bombY][bombX-1].wasWall==true) {	  //이전 상태가 벽 상태였으면,  
+	    			  // if (mapInfo.map[bombY-1][bombX].state != FREE) {	    		  
 	 	    			  //여기다 랜덤으로 state를 FREE 또는 아이템 1,2로 설정하는 함수 
+	    			  	mapInfo.map[bombY][bombX-1].wasWall=false; //벽 취소
 	 	    			  mapInfo.map[bombY][bombX-1].state =itemArray[random.nextInt(8)];	    			  
 	 	    	  		}	else {
 	 	    		  mapInfo.map[bombY][bombX-1].state = FREE;

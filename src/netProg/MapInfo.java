@@ -10,6 +10,7 @@ public class MapInfo {
 		int x;
 		int y;
 		String state = "FREE"; //기본값은 FREE
+		boolean wasWall = false;	//아이템 구현을 위해 전 상태가 벽이었는지 저장
 	}
 	
 	public MapInfo(int size) {
@@ -21,6 +22,7 @@ public class MapInfo {
 				   this.map[i][j] = new Information();
 				   this.map[i][j].x = j *40;
 				   this.map[i][j].y = i *40;
+				   this.map[i][j].wasWall=false;
 			   }
 		   }
 	}
