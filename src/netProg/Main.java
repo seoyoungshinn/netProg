@@ -20,7 +20,7 @@ import javax.swing.JOptionPane;
 import javax.swing.border.EmptyBorder;
 
 import netProg.Cookie;
- import netProg.GameStart;
+import netProg.GameStart;
 
 public class Main extends JFrame{
 	
