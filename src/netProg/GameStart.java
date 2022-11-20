@@ -26,31 +26,31 @@ import java.awt.MediaTracker;
 
 public class GameStart extends JFrame implements KeyListener,MouseListener,Runnable{
 
-	//keyboard ì œì–´ë¥¼ ìœ„í•œ ë³€ìˆ˜
+	//keyboard Á¦¾î¸¦ À§ÇÑ º¯¼ö
 	   boolean keyU = false;
 	   boolean keyD = false;
 	   boolean keyL = false;
 	   boolean keyR = false;
 	     
-	// ìƒíƒœë³€ìˆ˜
+	// »óÅÂº¯¼ö
 	   boolean die = false;
-	   int bombAvailable =3;		//ì´ˆê¸° ìµœëŒ€ ë¬¼í’ì„  ê°œìˆ˜ëŠ” 1
+	   int bombAvailable =3;		//ÃÊ±â ÃÖ´ë ¹°Ç³¼± °³¼ö´Â 1
 	   int maxBomb = 10;
 	 //  boolean isBombExplode = false;
-	   private int speed = 40;  //80ì´ ê¸°ë³¸, 40ì´ë©´ ë¹ ë¦„, í…ŒìŠ¤íŠ¸ìš©ì´ë¼ 30ê³ ì •
+	   private int speed = 40;  //80ÀÌ ±âº», 40ÀÌ¸é ºü¸§, Å×½ºÆ®¿ëÀÌ¶ó 30°íÁ¤
 	   private int MaxSpeed = 30;
 	
-	//myMove, yourMoveì— ì“¸ StringData
+	//myMove, yourMove¿¡ ¾µ StringData
 	   final String UP = "up";
 	   final String DOWN = "down";
 	   final String RIGHT = "right";
 	   final String LEFT = "left";
 	   
-	//ì´ˆê¸°í™”ì‹œ ìºë¦­í„°ëŠ” ì•ì„ ì³ë‹¤ë³´ê³  ìˆìŒ
+	//ÃÊ±âÈ­½Ã Ä³¸¯ÅÍ´Â ¾ÕÀ» ÃÄ´Ùº¸°í ÀÖÀ½
 	   String myMove = DOWN;
 	   String yourMove = DOWN;
 	
-	// ì¢Œí‘œ ë³€ìˆ˜ë“¤
+	// ÁÂÇ¥ º¯¼öµé
 	   int myX = 500, myY = 500;
 	   int yourX = 100, yourY = 100;   
 	   int bombX, bombY;	   
@@ -67,30 +67,30 @@ public class GameStart extends JFrame implements KeyListener,MouseListener,Runna
 	   final String BLEFT = "BLEFT";
 	   final String BRIGHT = "BRIGHT";
 	   final String BCENTER = "BCENTER";
-	   final String ITEMSPEED = "ITEMSPEED";				//ì†ë ¥ì„ ë¹ ë¥´ê²Œ
-	   final String ITEMSTRONGBOMB = "ITEMSTRONGBOMB";		//ë¬¼í’ì„  ê¸¸ì´ë¥¼ ê¸¸ê²Œ
-	   final String ITEMPLUSBOMB = "ITEMPLUSBOMB";			//ë¬¼í’ì„  ê°œìˆ˜ ì¦ê°€
+	   final String ITEMSPEED = "ITEMSPEED";				//¼Ó·ÂÀ» ºü¸£°Ô
+	   final String ITEMSTRONGBOMB = "ITEMSTRONGBOMB";		//¹°Ç³¼± ±æÀÌ¸¦ ±æ°Ô
+	   final String ITEMPLUSBOMB = "ITEMPLUSBOMB";			//¹°Ç³¼± °³¼ö Áõ°¡
 	   
-	   //8ê°œì¤‘ 3ê°œë§Œì•„ì´í…œ (ë‚˜ì˜¬í™•ë¥  1/8)
-	   private String[] itemArray = {ITEMSPEED, ITEMPLUSBOMB, ITEMPLUSBOMB, ITEMSPEED, FREE, FREE, FREE,FREE};
+	   //8°³Áß 3°³¸¸¾ÆÀÌÅÛ (³ª¿ÃÈ®·ü 1/8)
+	   private String[] itemArray = {ITEMPLUSBOMB, ITEMPLUSBOMB, ITEMPLUSBOMB, ITEMSPEED, FREE, FREE, FREE,FREE};
 	
-	// ì•„ì´í…œ ë³€ìˆ˜
-	   private Vector<JLabel> item = new Vector<JLabel>();
-	   private ArrayList<JLabel> itemlist = new ArrayList<JLabel>();	   
-	   private ImageIcon[] item2 = { new ImageIcon("images/speed.png"),null,null, null };
+	// ¾ÆÀÌÅÛ º¯¼ö
+//	   private Vector<JLabel> item = new Vector<JLabel>();
+//	   private ArrayList<JLabel> itemlist = new ArrayList<JLabel>();	   
+//	   private ImageIcon[] item2 = { new ImageIcon("images/speed.png"),null,null, null };
 	   ImageIcon item3;
 	   JLabel itemLabel;
 	   
 	   private JLabel contentPane;
 	   
-	   GameScreen gamescreen; //Canvasê°ì²´
+	   GameScreen gamescreen; //Canvas°´Ã¼
 	   
-	   int gScreenWidth=615;//ê²Œì„ í™”ë©´ ë„ˆë¹„
-	   int gScreenHeight=645;//ê²Œì„ í™”ë©´ ë†’ì´
-	   Image mapBG = new ImageIcon("Images/mapbg1.png").getImage();  //ê²Œì„1ë°°ê²½
+	   int gScreenWidth=615;//°ÔÀÓ È­¸é ³Êºñ
+	   int gScreenHeight=645;//°ÔÀÓ È­¸é ³ôÀÌ
+	   Image mapBG = new ImageIcon("Images/mapbg1.png").getImage();  //°ÔÀÓ1¹è°æ
 	   
 
-	   boolean roof=true;//ìŠ¤ë ˆë“œ ë£¨í”„ ì •ë³´
+	   boolean roof=true;//½º·¹µå ·çÇÁ Á¤º¸
 	   public MapInfo mapInfo;
 	   Random random = new Random();
 	   
@@ -99,7 +99,7 @@ public class GameStart extends JFrame implements KeyListener,MouseListener,Runna
 	   
 	   
 	   ///////////////////////////////////////////////////////////////
-	   //							ìƒì„±ì							//
+	   //							»ı¼ºÀÚ							//
 	   ///////////////////////////////////////////////////////////////	   
 	   public GameStart() {
 			 setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -111,13 +111,13 @@ public class GameStart extends JFrame implements KeyListener,MouseListener,Runna
 		     contentPane.setLayout(null);
 
 		     setContentPane(contentPane);
-		     setResizable(true); //ìœˆë„ìš° í¬ê¸° ë³€ê²½ 
+		     setResizable(true); //À©µµ¿ì Å©±â º¯°æ 
 		     setVisible(true);		     
-		     addKeyListener(this);//í‚¤ ì…ë ¥ ì´ë²¤íŠ¸ ë¦¬ìŠ¤ë„ˆ í™œì„±í™”
+		     addKeyListener(this);//Å° ÀÔ·Â ÀÌº¥Æ® ¸®½º³Ê È°¼ºÈ­
 		     
-		     gamescreen=new GameScreen(this);//í™”ë©´ ë¬˜í™”ë¥¼ ìœ„í•œ ìº”ë²„ìŠ¤ ê°ì²´
+		     gamescreen=new GameScreen(this);//È­¸é ¹¦È­¸¦ À§ÇÑ Äµ¹ö½º °´Ã¼
 		     gamescreen.setBounds(0,0,gScreenWidth,gScreenHeight);
-			 add(gamescreen);//Canvas ê°ì²´ë¥¼ í”„ë ˆì„ì— ì˜¬ë¦°ë‹¤
+			 add(gamescreen);//Canvas °´Ã¼¸¦ ÇÁ·¹ÀÓ¿¡ ¿Ã¸°´Ù
 
 	 
 			 this.requestFocus();
@@ -127,36 +127,36 @@ public class GameStart extends JFrame implements KeyListener,MouseListener,Runna
 			 initialize();
 			 
 
-			 printMap(); //ë””ë²„ê¹…ìš©
+			 printMap(); //µğ¹ö±ë¿ë
 
-	   	}//End of GameStart(ìƒì„±ì)
+	   	}//End of GameStart(»ı¼ºÀÚ)
 	   
-//////////////////////ë””ë²„ê¹…ìš©///////////////////////////////   
+//////////////////////µğ¹ö±ë¿ë///////////////////////////////   
 	   public void printMap() {
 		   for (int i = 0; i<15; i++) {
 			   for (int j =0; j<15; j++) {
-				 //ì¢Œí‘œì™€ ìƒíƒœì¶œë ¥
+				 //ÁÂÇ¥¿Í »óÅÂÃâ·Â
 				 //  System.out.printf("(%3d,%3d) %10s\t", mapInfo.map[i][j].x,mapInfo.map[i][j].y,mapInfo.map[i][j].state);
 			   
-				 //ìƒíƒœë§Œì¶œë ¥  
-				   //System.out.printf("%10s\t", mapInfo.map[i][j].state); 
+				 //»óÅÂ¸¸Ãâ·Â  
+				   System.out.printf("%10s\t", mapInfo.map[i][j].state); 
 				   
-				 //ë²½ì—¬ë¶€ë§Œ ì¶œë ¥
-				   System.out.printf("%3s\t", mapInfo.map[i][j].wasWall); 
+				 //º®¿©ºÎ¸¸ Ãâ·Â
+				 //  System.out.printf("%3s\t", mapInfo.map[i][j].wasWall); 
 			   }
 			   System.out.println();
 		   } 
 		   System.out.println();
 		   System.out.println();
 	   }
-//////////////////////ë””ë²„ê¹…ìš©///////////////////////////////	   
+//////////////////////µğ¹ö±ë¿ë///////////////////////////////	   
 	   
 	   ///////////////////////////////////////////////////////////////
 	   //					initializing Function					//
 	   ///////////////////////////////////////////////////////////////
 	   
-	   public void mapSetting(MapInfo mapInfo) { //ë§µ ì •ë³´ ì´ˆê¸°í™”
-		   //ê°€ìƒì´ ê°ˆìƒ‰ ë¸”ë¡ ì¶”ê°€
+	   public void mapSetting(MapInfo mapInfo) { //¸Ê Á¤º¸ ÃÊ±âÈ­
+		   //°¡»ıÀÌ °¥»ö ºí·Ï Ãß°¡
 		   for (int j = 0; j<15; j++) {
 			   for (int i =0; i<15; i++) {
 				   if (i == 0 || i == 14 || j ==0 || j ==14) {
@@ -166,7 +166,7 @@ public class GameStart extends JFrame implements KeyListener,MouseListener,Runna
 			   }//End of inner for
 		   }//End of outer for
 		   
-		   //ê°€ìš´ë° í•˜íŠ¸ í•‘í¬ë¸”ë¡ ì¶”ê°€
+		   //°¡¿îµ¥ ÇÏÆ® ÇÎÅ©ºí·Ï Ãß°¡
 		   mapInfo.map[1][3].state = PINKBLOCK;		   mapInfo.map[1][4].state = PINKBLOCK;		   mapInfo.map[1][5].state = PINKBLOCK;		   mapInfo.map[1][9].state = PINKBLOCK;		   mapInfo.map[1][10].state = PINKBLOCK;		   mapInfo.map[1][11].state = PINKBLOCK;
 		   mapInfo.map[2][2].state = PINKBLOCK;		   mapInfo.map[2][6].state = PINKBLOCK;		   mapInfo.map[2][8].state = PINKBLOCK;		   mapInfo.map[2][12].state = PINKBLOCK;
 		   mapInfo.map[3][1].state = PINKBLOCK;		   mapInfo.map[3][7].state = PINKBLOCK;		   mapInfo.map[3][13].state = PINKBLOCK;
@@ -180,7 +180,7 @@ public class GameStart extends JFrame implements KeyListener,MouseListener,Runna
 		   mapInfo.map[11][5].state = PINKBLOCK;		   mapInfo.map[11][9].state = PINKBLOCK;
 		   mapInfo.map[12][6].state = PINKBLOCK;		   mapInfo.map[12][8].state = PINKBLOCK;
 		   mapInfo.map[13][7].state = PINKBLOCK;
-		   //í•‘í¬í•˜íŠ¸ë„ ëª¨ë‘ ë²½ì²˜ë¦¬ 		   
+		   //ÇÎÅ©ÇÏÆ®µµ ¸ğµÎ º®Ã³¸® 		   
 		   mapInfo.map[1][3].wasWall = true;		   mapInfo.map[1][4].wasWall = true;		   mapInfo.map[1][5].wasWall = true;		   mapInfo.map[1][9].wasWall = true;		   mapInfo.map[1][10].wasWall = true;		   mapInfo.map[1][11].wasWall = true;
 		   mapInfo.map[2][2].wasWall = true;		   mapInfo.map[2][6].wasWall = true;		   mapInfo.map[2][8].wasWall = true;		   mapInfo.map[2][12].wasWall = true;
 		   mapInfo.map[3][1].wasWall = true;		   mapInfo.map[3][7].wasWall = true;		   mapInfo.map[3][13].wasWall = true;
@@ -198,8 +198,8 @@ public class GameStart extends JFrame implements KeyListener,MouseListener,Runna
 	   
 	   
 	   
-	   public void initialize() {	//ê²Œì„ ì´ˆê¸°í™”		   
-		   //ì´ˆê¸° ìºë¦­í„°ëŠ” ì•ì„ ë³´ê³ ìˆìŒ.
+	   public void initialize() {	//°ÔÀÓ ÃÊ±âÈ­		   
+		   //ÃÊ±â Ä³¸¯ÅÍ´Â ¾ÕÀ» º¸°íÀÖÀ½.
 		   myMove = DOWN;
 		   yourMove = DOWN;
 		   gamescreen.repaint();
@@ -208,10 +208,10 @@ public class GameStart extends JFrame implements KeyListener,MouseListener,Runna
 	   
 	   
    ///////////////////////////////////////////////////////////////
-   //						ê¸°ëŠ¥ í•¨ìˆ˜ë“¤ ëª¨ìŒ							//
+   //						±â´É ÇÔ¼öµé ¸ğÀ½							//
    ///////////////////////////////////////////////////////////////
 	   
-	   public void colliderControl(MapInfo mapInfo ){	//ì¶©ëŒì²˜ë¦¬	   
+	   public void colliderControl(MapInfo mapInfo ){	//Ãæµ¹Ã³¸®	   
 		   for (int i =0; i<mapInfo.size; i++) {
 			   for (int j =0; j<mapInfo.size; j++) {
 				   switch(mapInfo.map[i][j].state) {
@@ -290,21 +290,21 @@ public class GameStart extends JFrame implements KeyListener,MouseListener,Runna
 					}//end of switch		 
 			   }//end of inner for
 		   }//end of outer for
-	   }//End of colliderControl(MapInfo mapInfo)	//ì¶©ëŒì²˜ë¦¬í•¨ìˆ˜ ë
+	   }//End of colliderControl(MapInfo mapInfo)	//Ãæµ¹Ã³¸®ÇÔ¼ö ³¡
 	   
 	   
 	   
-	   public void itemSpeedUp() { //ìºë¦­í„° ì›€ì§ì„ ì†ë„ ì¦ê°€
-		   //ê·¼ë° ì´ê±° ë‹¤ì‹œì§œì•¼í•  ìˆ˜ ë„ ìˆìŒ ì™œëƒë©´ ìŠ¤ë ˆë“œ ë§ˆë‹¤ì—¬ì„œ ë‚´ê°€ ì•„ì´í…œ ë¨¹ìœ¼ë©´ ìƒëŒ€ë„ ì¦ê°€í• ìˆ˜ë„ìˆì–´ì„œ
-		   //ì§€ê¸ˆì€ ë‹¨ìœ„ê°€ repaint ì—…ë°ì´íŠ¸ ë‹¨ìœ„(ì•„ë§ˆ)ì¸ë° í…ŒìŠ¤íŠ¸ í•´ë³´ê³  ì•ˆë¼ë©´ í‚¤í”„ë¡œì„¸ìŠ¤ì— ì¦ê°€ë‹¨ìœ„ë¥¼ ë°”ê¿”ì•¼í•¨
-		   //ì¼ë‹¨ 1ì¸ìš©ì¼ë•ŒëŠ” ë˜ê¸´ í•¨
+	   public void itemSpeedUp() { //Ä³¸¯ÅÍ ¿òÁ÷ÀÓ ¼Óµµ Áõ°¡
+		   //±Ùµ¥ ÀÌ°Å ´Ù½ÃÂ¥¾ßÇÒ ¼ö µµ ÀÖÀ½ ¿Ö³Ä¸é ½º·¹µå ¸¶´Ù¿©¼­ ³»°¡ ¾ÆÀÌÅÛ ¸ÔÀ¸¸é »ó´ëµµ Áõ°¡ÇÒ¼öµµÀÖ¾î¼­
+		   //Áö±İÀº ´ÜÀ§°¡ repaint ¾÷µ¥ÀÌÆ® ´ÜÀ§(¾Æ¸¶)ÀÎµ¥ Å×½ºÆ® ÇØº¸°í ¾ÈµÅ¸é Å°ÇÁ·Î¼¼½º¿¡ Áõ°¡´ÜÀ§¸¦ ¹Ù²ã¾ßÇÔ
+		   //ÀÏ´Ü 1ÀÎ¿ëÀÏ¶§´Â µÇ±ä ÇÔ
 		   this.speed-=20;
 		   if(speed<MaxSpeed)
 		   speed = MaxSpeed;
 	   }
 	   
 	   
-	   public void itemPlusBomb() {	//í•œ ë²ˆì— ê°€ëŠ¥í•œ ë¬¼í’ì„  ê°œìˆ˜ ì¦ê°€ (ìµœëŒ€ 10)
+	   public void itemPlusBomb() {	//ÇÑ ¹ø¿¡ °¡´ÉÇÑ ¹°Ç³¼± °³¼ö Áõ°¡ (ÃÖ´ë 10)
 		   this.bombAvailable+=1;
 		   if(bombAvailable>maxBomb)
 			   bombAvailable = maxBomb;
@@ -321,9 +321,9 @@ public class GameStart extends JFrame implements KeyListener,MouseListener,Runna
 	    	  bombY/=40;
 	    	  if (myY !=0) bombY+=1;
 	    	  
-	    	  System.out.println("ë°°ì—´ì¢Œí‘œ>>>"+bombX+","+bombY);
+	    	  System.out.println("¹è¿­ÁÂÇ¥>>>"+bombX+","+bombY);
 		       // store parameter for later user
-		   }//End of ìƒì„±ì
+		   }//End of »ı¼ºÀÚ
 
 		   @Override
 	         public void run() {
@@ -352,19 +352,19 @@ public class GameStart extends JFrame implements KeyListener,MouseListener,Runna
 	    	  System.out.println("FreeBomb");
 	    	  mapInfo.map[bombY][bombX].state = FREE;
 	    	  if (bombY-1 >=0) {
-	    		  if (mapInfo.map[bombY-1][bombX].wasWall==true) {	  //ì´ì „ ìƒíƒœê°€ ë²½ ìƒíƒœì˜€ìœ¼ë©´,  		  
-	    			  //ì—¬ê¸°ë‹¤ ëœë¤ìœ¼ë¡œ stateë¥¼ FREE ë˜ëŠ” ì•„ì´í…œ 1,2ë¡œ ì„¤ì •í•˜ëŠ” í•¨ìˆ˜ 
+	    		  if (mapInfo.map[bombY-1][bombX].wasWall==true) {	  //ÀÌÀü »óÅÂ°¡ º® »óÅÂ¿´À¸¸é,  		  
+	    			  //¿©±â´Ù ·£´ıÀ¸·Î state¸¦ FREE ¶Ç´Â ¾ÆÀÌÅÛ 1,2·Î ¼³Á¤ÇÏ´Â ÇÔ¼ö 
 	    			  randomNum = random.nextInt(8);
-	    			  mapInfo.map[bombY-1][bombX].wasWall=false; //ë²½ ì·¨ì†Œ
+	    			  mapInfo.map[bombY-1][bombX].wasWall=false; //º® Ãë¼Ò
 	    			  mapInfo.map[bombY-1][bombX].state =itemArray[randomNum];	    			  
 	    	  		}	else {
 	    	  				mapInfo.map[bombY-1][bombX].state = FREE;
 	    	  				}
 	    	  }
 	    	  if(bombY+1<15) {
-	    		  if (mapInfo.map[bombY+1][bombX].wasWall==true) {	  //ì´ì „ ìƒíƒœê°€ ë²½ ìƒíƒœì˜€ìœ¼ë©´,  
+	    		  if (mapInfo.map[bombY+1][bombX].wasWall==true) {	  //ÀÌÀü »óÅÂ°¡ º® »óÅÂ¿´À¸¸é,  
 	    			  randomNum = random.nextInt(8);
-	    			  mapInfo.map[bombY+1][bombX].wasWall=false; //ë²½ ì·¨ì†Œ
+	    			  mapInfo.map[bombY+1][bombX].wasWall=false; //º® Ãë¼Ò
 	    			  mapInfo.map[bombY+1][bombX].state =itemArray[randomNum];	    			  
 	 	    	  		}	else {
 	 	    	  				mapInfo.map[bombY+1][bombX].state = FREE;
@@ -372,9 +372,9 @@ public class GameStart extends JFrame implements KeyListener,MouseListener,Runna
 	    	  }
 	    		
 	    	  if(bombX+1 <15) {
-	    		  if (mapInfo.map[bombY][bombX+1].wasWall==true) {	  //ì´ì „ ìƒíƒœê°€ ë²½ ìƒíƒœì˜€ìœ¼ë©´,  
+	    		  if (mapInfo.map[bombY][bombX+1].wasWall==true) {	  //ÀÌÀü »óÅÂ°¡ º® »óÅÂ¿´À¸¸é,  
 	    			  randomNum = random.nextInt(8);
-	    			  mapInfo.map[bombY][bombX+1].wasWall=false; //ë²½ ì·¨ì†Œ
+	    			  mapInfo.map[bombY][bombX+1].wasWall=false; //º® Ãë¼Ò
 	    			  mapInfo.map[bombY][bombX+1].state =itemArray[randomNum];	    			  
 	 	    	  		}	else {
 				 	    		  mapInfo.map[bombY][bombX+1].state = FREE;
@@ -382,10 +382,10 @@ public class GameStart extends JFrame implements KeyListener,MouseListener,Runna
 	    	  }
 	    		 
 	    	  if(bombX-1 >=0) {
-	    		  if (mapInfo.map[bombY][bombX-1].wasWall==true) {	  //ì´ì „ ìƒíƒœê°€ ë²½ ìƒíƒœì˜€ìœ¼ë©´,  
+	    		  if (mapInfo.map[bombY][bombX-1].wasWall==true) {	  //ÀÌÀü »óÅÂ°¡ º® »óÅÂ¿´À¸¸é,  
 	    			  // if (mapInfo.map[bombY-1][bombX].state != FREE) {	    		  
 	    			  randomNum = random.nextInt(8);	
-	    			  mapInfo.map[bombY][bombX-1].wasWall=false; //ë²½ ì·¨ì†Œ
+	    			  mapInfo.map[bombY][bombX-1].wasWall=false; //º® Ãë¼Ò
 	    			  mapInfo.map[bombY][bombX-1].state =itemArray[randomNum];	    			  
 	 	    	  		}	else {
 	 	    	  				mapInfo.map[bombY][bombX-1].state = FREE;
@@ -413,7 +413,7 @@ public class GameStart extends JFrame implements KeyListener,MouseListener,Runna
 	      
 	      public void dropBomb(int bombX, int bombY) {
 
-	    	  System.out.println("ë°°ì—´ì¢Œí‘œ>>>"+bombX+","+bombY);
+	    	  System.out.println("¹è¿­ÁÂÇ¥>>>"+bombX+","+bombY);
 	    	  mapInfo.map[bombY][bombX].state = BOMB;
 	    	  printMap(); 
 
@@ -426,7 +426,7 @@ public class GameStart extends JFrame implements KeyListener,MouseListener,Runna
 
 	   
    ///////////////////////////////////////////////////////////////
-   //					KeyBoard ì´ë²¤íŠ¸ ì²˜ë¦¬ + process				//
+   //					KeyBoard ÀÌº¥Æ® Ã³¸® + process				//
    ///////////////////////////////////////////////////////////////
 	@Override
 	public void keyTyped(KeyEvent e) {}
@@ -491,7 +491,7 @@ public class GameStart extends JFrame implements KeyListener,MouseListener,Runna
 	
 	
 	
-	//í…ŒìŠ¤íŠ¸ë¥¼ ìœ„í•´ ìš°ë‹ˆë„ ë°°ì°Œì™€ ê°™ì€ë°©í–¥ìœ¼ë¡œ ë³´ê²Œ ì„¤ì •í•´ë†“ì•˜ìŒ
+	//Å×½ºÆ®¸¦ À§ÇØ ¿ì´Ïµµ ¹èÂî¿Í °°Àº¹æÇâÀ¸·Î º¸°Ô ¼³Á¤ÇØ³õ¾ÒÀ½
 	public void keyProcess() {
 	//	System.out.println("KeyProcess()"+myMove);
 	    if (keyU == true) {
@@ -538,7 +538,7 @@ public class GameStart extends JFrame implements KeyListener,MouseListener,Runna
    //					OnClickListener(focus)					//
    ///////////////////////////////////////////////////////////////
 
-	//ì´ê²Œì•ˆë¨ ã… ã… 
+	//ÀÌ°Ô¾ÈµÊ ¤Ğ¤Ğ
 	@Override
 	public void mouseClicked(MouseEvent e) {
 		// TODO Auto-generated method stub
@@ -563,30 +563,30 @@ public class GameStart extends JFrame implements KeyListener,MouseListener,Runna
 	   class GameScreen extends Canvas{
 		   	GameStart main;
 		   
-			Image dblbuff;//ë”ë¸”ë²„í¼ë§ìš© ë°±ë²„í¼
-			Graphics gc;//ë”ë¸”ë²„í¼ë§ìš© ê·¸ë˜í”½ ì»¨í…ìŠ¤íŠ¸
+			Image dblbuff;//´õºí¹öÆÛ¸µ¿ë ¹é¹öÆÛ
+			Graphics gc;//´õºí¹öÆÛ¸µ¿ë ±×·¡ÇÈ ÄÁÅØ½ºÆ®
 
-			Image bg; //ë°°ê²½í™”ë©´
+			Image bg; //¹è°æÈ­¸é
 			
-			 //ë‚´ ìºë¦­í„° -> ë°°ì°Œë¡œ ê³ ì •
+			 //³» Ä³¸¯ÅÍ -> ¹èÂî·Î °íÁ¤
 			Image bazziUp = new ImageIcon("images/bazzi_back.png").getImage();
 			Image bazziDown = new ImageIcon("images/bazzi_front.png").getImage();
 			Image bazziLeft = new ImageIcon("images/bazzi_left.png").getImage();
 			Image bazziRight = new ImageIcon("images/bazzi_right.png").getImage();
 			   
-			 //ìƒëŒ€ ìºë¦­í„° -> ìš°ë‹ˆë¡œ ê³ ì •
+			 //»ó´ë Ä³¸¯ÅÍ -> ¿ì´Ï·Î °íÁ¤
 			Image uniUp = new ImageIcon("images/woonie_back.png").getImage();
 			Image uniDown = new ImageIcon("images/woonie_front.png").getImage();
 			Image uniLeft = new ImageIcon("images/woonie_left.png").getImage();
 			Image uniRight = new ImageIcon("images/woonie_right.png").getImage();
 			 
-			 //ë°•ìŠ¤
+			 //¹Ú½º
 			Image iconBoxBrown = new ImageIcon("images/cookie.png").getImage();
 			Image iconBoxPink = new ImageIcon("images/cookie2.png").getImage();
 			Image iconItemSpeed = new ImageIcon("images/speed.png").getImage();
 			Image iconBomb = new ImageIcon("images/bomb.png").getImage();
 			
-			//ë¬¼í’ì„ 
+			//¹°Ç³¼±
 			Image iconBumb = new ImageIcon("images/bomb.png").getImage();
 			Image iconBup = new ImageIcon("images/bup.png").getImage();
 			Image iconBdown = new ImageIcon("images/bdown.png").getImage();
@@ -598,15 +598,15 @@ public class GameStart extends JFrame implements KeyListener,MouseListener,Runna
 			
 			GameScreen (GameStart main){
 				this.main = main;
-			}//End of GameScreen(ìƒì„±ì)
+			}//End of GameScreen(»ı¼ºÀÚ)
 			
 			
 			
 			public void paint(Graphics g){
 				if(gc==null) {
-					dblbuff=createImage(main.gScreenWidth,main.gScreenHeight);//ë”ë¸” ë²„í¼ë§ìš© ì˜¤í”„ìŠ¤í¬ë¦° ë²„í¼ ìƒì„±. í•„íˆ paint í•¨ìˆ˜ ë‚´ì—ì„œ í•´ ì¤˜ì•¼ í•œë‹¤. ê·¸ë ‡ì§€ ì•Šìœ¼ë©´ nullì´ ë°˜í™˜ëœë‹¤.
-					if(dblbuff==null) System.out.println("ì˜¤í”„ìŠ¤í¬ë¦° ë²„í¼ ìƒì„± ì‹¤íŒ¨");
-					else gc=dblbuff.getGraphics();//ì˜¤í”„ìŠ¤í¬ë¦° ë²„í¼ì— ê·¸ë¦¬ê¸° ìœ„í•œ ê·¸ë˜í”½ ì»¨í…ìŠ¤íŠ¸ íšë“
+					dblbuff=createImage(main.gScreenWidth,main.gScreenHeight);//´õºí ¹öÆÛ¸µ¿ë ¿ÀÇÁ½ºÅ©¸° ¹öÆÛ »ı¼º. ÇÊÈ÷ paint ÇÔ¼ö ³»¿¡¼­ ÇØ Áà¾ß ÇÑ´Ù. ±×·¸Áö ¾ÊÀ¸¸é nullÀÌ ¹İÈ¯µÈ´Ù.
+					if(dblbuff==null) System.out.println("¿ÀÇÁ½ºÅ©¸° ¹öÆÛ »ı¼º ½ÇÆĞ");
+					else gc=dblbuff.getGraphics();//¿ÀÇÁ½ºÅ©¸° ¹öÆÛ¿¡ ±×¸®±â À§ÇÑ ±×·¡ÇÈ ÄÁÅØ½ºÆ® È¹µæ
 					return;
 				}
 				update(g);
@@ -614,24 +614,24 @@ public class GameStart extends JFrame implements KeyListener,MouseListener,Runna
 			
 			
 			
-			public void update(Graphics g){//í™”ë©´ ê¹œë°•ê±°ë¦¼ì„ ì¤„ì´ê¸° ìœ„í•´, paintì—ì„œ í™”ë©´ì„ ë°”ë¡œ ë¬˜í™”í•˜ì§€ ì•Šê³  update ë©”ì†Œë“œë¥¼ í˜¸ì¶œí•˜ê²Œ í•œë‹¤.
+			public void update(Graphics g){//È­¸é ±ô¹Ú°Å¸²À» ÁÙÀÌ±â À§ÇØ, paint¿¡¼­ È­¸éÀ» ¹Ù·Î ¹¦È­ÇÏÁö ¾Ê°í update ¸Ş¼Òµå¸¦ È£ÃâÇÏ°Ô ÇÑ´Ù.
 				//cnt=main.cnt;
 				//gamecnt=main.gamecnt;
 				if(gc==null) return;
-				dblpaint();//ì˜¤í”„ìŠ¤í¬ë¦° ë²„í¼ì— ê·¸ë¦¬ê¸°
-				g.drawImage(dblbuff,0,0,this);//ì˜¤í”„ìŠ¤í¬ë¦° ë²„í¼ë¥¼ ë©”ì¸í™”ë©´ì— ê·¸ë¦°ë‹¤.
+				dblpaint();//¿ÀÇÁ½ºÅ©¸° ¹öÆÛ¿¡ ±×¸®±â
+				g.drawImage(dblbuff,0,0,this);//¿ÀÇÁ½ºÅ©¸° ¹öÆÛ¸¦ ¸ŞÀÎÈ­¸é¿¡ ±×¸°´Ù.
 			}//End of update(Graphics g)
 			
 			
 			
 			public void dblpaint(){  
-				//ì‹¤ì œ ê·¸ë¦¬ëŠ” ë™ì‘ì€ ì´ í•¨ìˆ˜ì—ì„œ ëª¨ë‘ í–‰í•œë‹¤.				
-				Draw_BG (); // ë§µ ë°°ê²½í™”ë©´ (í•‘í¬) ê·¸ë¦¬ê¸°
-				Draw_Blocks(); //ë¸”ë¡ ê·¸ë¦¬ê¸°
-				Draw_myChracter(); //ë‚´ ìºë¦­í„° (ë°°ì°Œ)ê·¸ë¦¬ê¸°
-				Draw_yourChracter(); //ìƒëŒ€ ìºë¦­í„°(ìš°ë‹ˆ) ê·¸ë¦¬ê¸°
-				//DrawBomb();	//ë¬¼í’ì„ ê·¸ë¦¬ê¸°
-				//ExplodeBomb();  //ë¬¼í’ì„  í­ë°œ ê·¸ë¦¬ê¸°
+				//½ÇÁ¦ ±×¸®´Â µ¿ÀÛÀº ÀÌ ÇÔ¼ö¿¡¼­ ¸ğµÎ ÇàÇÑ´Ù.				
+				Draw_BG (); // ¸Ê ¹è°æÈ­¸é (ÇÎÅ©) ±×¸®±â
+				Draw_Blocks(); //ºí·Ï ±×¸®±â
+				Draw_myChracter(); //³» Ä³¸¯ÅÍ (¹èÂî)±×¸®±â
+				Draw_yourChracter(); //»ó´ë Ä³¸¯ÅÍ(¿ì´Ï) ±×¸®±â
+				//DrawBomb();	//¹°Ç³¼±±×¸®±â
+				//ExplodeBomb();  //¹°Ç³¼± Æø¹ß ±×¸®±â
 			}//End of dblpaint()
 
 			
@@ -644,7 +644,7 @@ public class GameStart extends JFrame implements KeyListener,MouseListener,Runna
 			
 			public void Draw_Blocks() {				
 				/*
-				 * //í…Œë‘ë¦¬ (15*15) for (int i = 0; i<=560; i+=40) {
+				 * //Å×µÎ¸® (15*15) for (int i = 0; i<=560; i+=40) {
 				 * gc.drawImage(boxBrown,i,0,this); } for (int i = 40; i<=520; i+=40) {
 				 * gc.drawImage(boxBrown,0,i,this); gc.drawImage(boxBrown,560,i,this); } for
 				 * (int i = 0; i<=560; i+=40) { gc.drawImage(boxBrown,i,560,this); }
@@ -688,12 +688,12 @@ public class GameStart extends JFrame implements KeyListener,MouseListener,Runna
 						   case ITEMSTRONGBOMB:
 							   gc.drawImage( new ImageIcon("images/speed.png").getImage(),mapInfo.map[i][j].x,mapInfo.map[i][j].y,this);
 							   break;
-						   case ITEMPLUSBOMB:
-							   gc.drawImage( new ImageIcon("images/speed.png").getImage(),mapInfo.map[i][j].x,mapInfo.map[i][j].y,this);
+						   case ITEMPLUSBOMB:							   
+							   gc.drawImage( new ImageIcon("images/plusBomb2.png").getImage(),mapInfo.map[i][j].x,mapInfo.map[i][j].y,this);
 							   break;
 							   
 							   
-						   case FREE :
+						   case FREE : 
 							   gc.drawImage(null,mapInfo.map[i][j].x,mapInfo.map[i][j].y,this);
 							   break;
 							   							  
@@ -740,14 +740,14 @@ public class GameStart extends JFrame implements KeyListener,MouseListener,Runna
 			}//End of Draw_myCharcter()
 			
 					
-			/*  ë°°ê²½ê·¸ë¦¬ëŠ”ê±¸ë¡œ í•©ì¹¨
-			 * public void DrawBomb() { //ì•ˆí„°ì§„ ë¬¼í’ì„  ê·¸ë¦¬ê¸° if (bombAvailable == false) {
+			/*  ¹è°æ±×¸®´Â°É·Î ÇÕÄ§
+			 * public void DrawBomb() { //¾ÈÅÍÁø ¹°Ç³¼± ±×¸®±â if (bombAvailable == false) {
 			 * gc.drawImage(iconBumb, bombX, bombY,this); } else { gc.drawImage(null, bombX,
 			 * bombY,this); } }
 			 */	
 			
-			/*  ë°°ê²½ê·¸ë¦¬ëŠ”ê±¸ë¡œ í•©ì¹¨
-			 * public void ExplodeBomb() { //í„°ì§€ëŠ” ë¬¼í’ì„  ê·¸ë¦¬ê¸° if (isBombExplode == true) {
+			/*  ¹è°æ±×¸®´Â°É·Î ÇÕÄ§
+			 * public void ExplodeBomb() { //ÅÍÁö´Â ¹°Ç³¼± ±×¸®±â if (isBombExplode == true) {
 			 * gc.drawImage(iconBcenter, bombX, bombY,this); gc.drawImage(iconBup, bombX,
 			 * bombY-40,this); gc.drawImage(iconBdown, bombX, bombY+40,this);
 			 * gc.drawImage(iconBleft, bombX-40, bombY,this); gc.drawImage(iconBright,
@@ -757,22 +757,22 @@ public class GameStart extends JFrame implements KeyListener,MouseListener,Runna
 			
 	   }//End of GameCanvas(class)
    ///////////////////////////////////////////////////////////////
-   //						GameCanvas ë						//
+   //						GameCanvas ³¡						//
    ///////////////////////////////////////////////////////////////
 
 	   
 	   
    ///////////////////////////////////////////////////////////////
-   //						ë©”ì¸ ìŠ¤ë ˆë“œ, ë©”ì¸ í•¨ìˆ˜					//
+   //						¸ŞÀÎ ½º·¹µå, ¸ŞÀÎ ÇÔ¼ö					//
    ///////////////////////////////////////////////////////////////
 			@Override
-			public void run() {//ë©”ì¸ ìŠ¤ë ˆë“œ
+			public void run() {//¸ŞÀÎ ½º·¹µå
 				// TODO Auto-generated method stub
 				
 				while(roof) {
-					gamescreen.repaint();//í™”ë©´ ë¦¬í˜ì¸íŠ¸
-					colliderControl(mapInfo); //ì¶©ëŒì²˜ë¦¬
-					keyProcess();	//í‚¤ë³´ë“œ ì²˜ë¦¬
+					gamescreen.repaint();//È­¸é ¸®ÆäÀÎÆ®
+					colliderControl(mapInfo); //Ãæµ¹Ã³¸®
+					keyProcess();	//Å°º¸µå Ã³¸®
 					
 				try {
 					Thread.sleep(speed);
