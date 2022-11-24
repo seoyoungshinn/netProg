@@ -26,6 +26,9 @@ import java.awt.MediaTracker;
 
 public class GameStart extends JFrame implements KeyListener,MouseListener,Runnable{
 
+	
+	Thread thread;
+	
 	//keyboard 제어를 위한 변수
 	   boolean keyU = false;
 	   boolean keyD = false;
@@ -125,6 +128,9 @@ public class GameStart extends JFrame implements KeyListener,MouseListener,Runna
 			 mapInfo =  new MapInfo(15);	
 			 mapSetting(mapInfo);
 			 initialize();
+			 
+			 thread = new Thread(this);
+			 thread.start();
 			 
 
 			 printMap(); //디버깅용
